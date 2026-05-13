@@ -5,6 +5,11 @@ plugins {
 group = "org.example"
 version = "1.0-SNAPSHOT"
 
+val intellijToolsVersion = "262.4852.50"
+val junitVersion = "5.13.4"
+val kodeinVersion = "7.26.1"
+val coroutinesVersion = "1.10.2"
+
 repositories {
     mavenCentral()
     maven(url = "https://cache-redirector.jetbrains.com/intellij-dependencies")
@@ -19,30 +24,26 @@ kotlin {
 }
 
 dependencies {
-    testImplementation("com.jetbrains.intellij.tools:ide-starter-squashed:LATEST-EAP-SNAPSHOT")
-    testImplementation("com.jetbrains.intellij.tools:ide-starter-junit5:LATEST-EAP-SNAPSHOT")
-    testImplementation("com.jetbrains.intellij.tools:ide-starter-driver:LATEST-EAP-SNAPSHOT")
+    testImplementation("com.jetbrains.intellij.tools:ide-starter-squashed:$intellijToolsVersion")
+    testImplementation("com.jetbrains.intellij.tools:ide-starter-junit5:$intellijToolsVersion")
+    testImplementation("com.jetbrains.intellij.tools:ide-starter-driver:$intellijToolsVersion")
 
-    testImplementation("com.jetbrains.intellij.driver:driver-client:LATEST-EAP-SNAPSHOT")
-    testImplementation("com.jetbrains.intellij.driver:driver-sdk:LATEST-EAP-SNAPSHOT")
-    testImplementation("com.jetbrains.intellij.driver:driver-model:LATEST-EAP-SNAPSHOT")
+    testImplementation("com.jetbrains.intellij.driver:driver-client:$intellijToolsVersion")
+    testImplementation("com.jetbrains.intellij.driver:driver-sdk:$intellijToolsVersion")
+    testImplementation("com.jetbrains.intellij.driver:driver-model:$intellijToolsVersion")
 
-    val junitBom = platform("org.junit:junit-bom:5.12.2")
+    val junitBom = platform("org.junit:junit-bom:$junitVersion")
     testImplementation(junitBom)
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    testImplementation("org.kodein.di:kodein-di-jvm:7.20.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.1")
+    testImplementation("org.kodein.di:kodein-di-jvm:$kodeinVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutinesVersion")
 }
 
 tasks.test {
     useJUnitPlatform()
-
-    jvmArgs(
-        "--add-exports=java.base/sun.nio.fs=ALL-UNNAMED",
-        "--add-opens=java.base/sun.nio.fs=ALL-UNNAMED"
-    )
+    systemProperty("java.awt.headless", "false")
 
     testLogging {
         events("passed", "skipped", "failed", "standardOut", "standardError")
