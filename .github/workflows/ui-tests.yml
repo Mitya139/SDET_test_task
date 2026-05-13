@@ -29,5 +29,32 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
+      - name: Install UI dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            fontconfig \
+            fonts-dejavu-core \
+            libasound2t64 \
+            libgbm1 \
+            libgtk-3-0 \
+            libnss3 \
+            libxss1 \
+            libxtst6
+
       - name: Run UI test
         run: xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -ac +extension RANDR" ./gradlew test --no-daemon --stacktrace
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-artifacts
+          if-no-files-found: ignore
+          retention-days: 7
+          path: |
+            build/reports/tests/test/
+            build/test-results/test/
+            out/ide-tests/tests/**/log/
+            out/ide-tests/tests/**/reports/
+            out/ide-tests/tests/**/snapshots/

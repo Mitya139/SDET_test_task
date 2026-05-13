@@ -1,5 +1,7 @@
 # Changelists Settings UI Test
 
+[![UI Tests](https://github.com/Mitya139/SDET_test_task/actions/workflows/ui-tests.yml/badge.svg)](https://github.com/Mitya139/SDET_test_task/actions/workflows/ui-tests.yml)
+
 This project contains an IntelliJ Platform UI integration test for the following scenario:
 
 1. Start PyCharm with a public GitHub project.
@@ -10,6 +12,13 @@ This project contains an IntelliJ Platform UI integration test for the following
 6. Confirm the dialog with OK.
 
 The test is implemented with JetBrains IDE Starter and Driver SDK.
+
+## Implementation Notes
+
+- The test opens a pinned PyCharm build and a public GitHub project pinned to a specific commit, which keeps the scenario reproducible.
+- UI actions are performed through JetBrains Driver SDK components. The SDK locates Swing components and performs robot-backed keyboard and mouse actions instead of changing component state directly.
+- CI and Docker run the test inside Xvfb because IntelliJ Platform UI tests need a non-headless AWT/Swing environment.
+- The first run downloads Gradle dependencies, IDE Starter artifacts, PyCharm, and the test project, so it requires network access and can take several minutes.
 
 ## Run Locally
 
@@ -64,3 +73,5 @@ The repository includes a GitHub Actions workflow that runs the same UI test on 
 ```text
 .github/workflows/ui-tests.yml
 ```
+
+The workflow uploads Gradle test reports and IDE Starter logs as artifacts on every run, including failed runs.
