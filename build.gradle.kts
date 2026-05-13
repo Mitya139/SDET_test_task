@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "2.3.0"
 }
 
-group = "org.example"
+group = "io.github.mitya139"
 version = "1.0-SNAPSHOT"
 
 val intellijToolsVersion = "262.4852.50"

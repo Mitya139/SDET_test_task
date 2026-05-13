@@ -36,11 +36,20 @@ jobs:
             fontconfig \
             fonts-dejavu-core \
             libasound2t64 \
+            libcups2 \
             libgbm1 \
             libgtk-3-0 \
             libnss3 \
+            libsecret-1-0 \
+            libx11-6 \
+            libxext6 \
+            libxi6 \
+            libxrandr2 \
+            libxrender1 \
             libxss1 \
-            libxtst6
+            libxtst6 \
+            xauth \
+            xvfb
 
       - name: Run UI test
         run: xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -ac +extension RANDR" ./gradlew test --no-daemon --stacktrace

@@ -16,9 +16,24 @@ The test is implemented with JetBrains IDE Starter and Driver SDK.
 ## Implementation Notes
 
 - The test opens a pinned PyCharm build and a public GitHub project pinned to a specific commit, which keeps the scenario reproducible.
-- UI actions are performed through JetBrains Driver SDK components. The SDK locates Swing components and performs robot-backed keyboard and mouse actions instead of changing component state directly.
+- UI elements are located through JetBrains Driver SDK components, while checkbox, button, and keyboard interactions are performed as UI actions rather than by mutating Swing state directly.
 - CI and Docker run the test inside Xvfb because IntelliJ Platform UI tests need a non-headless AWT/Swing environment.
 - The first run downloads Gradle dependencies, IDE Starter artifacts, PyCharm, and the test project, so it requires network access and can take several minutes.
+
+## Design Choices
+
+- Settings are opened with the IDE shortcut to stay close to the real user scenario.
+- The test project is imported with `prepareProjectCleanImport()` to avoid leaking IDE project files between runs.
+- The checkbox is selected with a Driver SDK click only when it is not already selected, then the selected state is verified explicitly.
+- CI uploads Gradle reports and IDE Starter artifacts on every run because UI test failures usually need logs and snapshots for diagnosis.
+
+## Versions
+
+- Kotlin: 2.3.0
+- JDK: 25
+- IntelliJ Starter / Driver SDK: 262.4852.50
+- Tested IDE: PyCharm 262.4852.46
+- Test project commit: 55cfb0e6021d86e957025bc40d8de3b0cb686e99
 
 ## Run Locally
 

@@ -41,4 +41,4 @@ RUN chmod +x ./gradlew \
 
 USER tester
 
-CMD ["bash", "-lc", "Xvfb :99 -screen 0 1920x1080x24 -ac +extension RANDR -nolisten tcp & export DISPLAY=:99; sleep 2; ./gradlew test --no-daemon --stacktrace"]
+CMD ["xvfb-run", "--auto-servernum", "--server-args=-screen 0 1920x1080x24 -ac +extension RANDR", "./gradlew", "test", "--no-daemon", "--stacktrace"]
